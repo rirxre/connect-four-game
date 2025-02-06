@@ -1,0 +1,41 @@
+name: CICD for GithubPages
+
+on: 
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout_Source
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Project
+      run: npm run build
+
+    - name: Upload artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        name: "github-pages"
+        path: dist
+
+    - name: Deploy to Github Pages
+      uses: peaceiris/deploy-pages@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifact_name: "github-pages"
