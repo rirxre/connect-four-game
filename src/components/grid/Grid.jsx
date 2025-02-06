@@ -31,7 +31,7 @@ const Grid = ({
 
   useEffect(() => {
     cpu && player === 2 && setNewDisk(getCpuColumnPlay(checkGrid(grid)));
-    // eslint-disable-next-line
+     
   }, [player]);
 
   const renderDisk = () => {
